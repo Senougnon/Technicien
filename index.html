@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wi-Fi Zone - Solutions de connectivité professionnelles</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine.js" defer></script>
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-in-up {
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+    .video-section {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .video-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* Ratio 16:9 */
+      height: 0;
+      overflow: hidden;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Styles pour la transition des images de l'en-tête */
+    .slide-out {
+      animation: slideOut 1s ease-in-out forwards;
+    }
+    .slide-in {
+      animation: slideIn 1s ease-in-out forwards;
+    }
+    @keyframes slideOut {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(-100%); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-100">
+
+  <!-- En-tête avec diaporama d'images et formulaire de devis -->
+  <header x-data="setupSlideshow()" x-init="init()" class="relative h-screen overflow-hidden">
+    <template x-for="(image, index) in images" :key="index">
+      <div 
+        x-show="index === currentIndex"
+        x-bind:style="'background-image: url(' + image + ')'"
+        class="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+        x-transition:enter="transition ease-in-out duration-1000"
+        x-transition:enter-start="opacity-0 transform translate-x-full"
+        x-transition:enter-end="opacity-1 transform translate-x-0"
+        x-transition:leave="transition ease-in-out duration-1000"
+        x-transition:leave-start="opacity-1 transform translate-x-0"
+        x-transition:leave-end="opacity-0 transform -translate-x-full"
+      ></div>
+    </template>
+
+    <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+    <div class="relative z-20 flex flex-col items-center justify-center h-full text-white">
+      <h1 class="text-5xl font-bold mb-4">Wi-Fi Zone</h1>
+      <p class="text-xl mb-8">Solutions de connectivité professionnelles</p>
+
+      <!-- Formulaire de devis animé -->
+      <div x-data="{ formOpen: false }" class="bg-white p-6 rounded-lg shadow-lg">
+        <button @click="formOpen = !formOpen" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">
+          Demander un devis
+        </button>
+        <div x-show="formOpen" x-transition:enter="transition ease-out duration-300"
+           x-transition:enter-start="opacity-0 transform scale-90"
+           x-transition:enter-end="opacity-100 transform scale-100"
+           x-transition:leave="transition ease-in duration-300"
+           x-transition:leave-start="opacity-100 transform scale-100"
+           x-transition:leave-end="opacity-0 transform scale-90"
+           class="mt-4">
+          <form class="space-y-4" action="https://api.whatsapp.com/send?phone=+22960374877" method="post" target="_blank">
+            <input type="text" name="text" placeholder="Nom" class="w-full p-2 border rounded text-gray-800" required>
+            <input type="email" name="text" placeholder="Email" class="w-full p-2 border rounded text-gray-800" required>
+            <textarea name="text" placeholder="Description du projet" class="w-full p-2 border rounded text-gray-800" required></textarea>
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">
+              Envoyer
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    function setupSlideshow() {
+      return {
+        images: ['img/img1.jpg', 'img/img2.jpg', 'img/img3.jpg', 'img/img4.jpg', 'img/img5.jpg'],
+        currentIndex: 0,
+        init() {
+          setInterval(() => {
+            this.currentIndex = (this.currentIndex + 1) % this.images.length;
+          }, 5000);
+        }
+      }
+    }
+  </script>
+
+  <!-- Section des produits avec démos vidéo -->
+  <section class="py-24 bg-gray-100">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-20 fade-in-up">Nos produits en action</h2>
+
+      <!-- Vidéo 1 -->
+      <div class="video-section mb-32 flex flex-col lg:flex-row items-center min-h-screen">
+        <div class="w-full lg:w-2/3 pr-0 lg:pr-12 mb-12 lg:mb-0">
+          <div class="video-container shadow-2xl rounded-lg overflow-hidden" style="height: 0; padding-bottom: 56.25%;">
+            <iframe src="https://www.youtube.com/embed/krUoLBi80JU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="w-full lg:w-1/3 space-y-6">
+          <h3 class="text-3xl font-semibold">Vente de tickets Wi-Fi Zone</h3>
+          <p class="text-xl text-gray-600">Découvrez notre système révolutionnaire de vente de tickets Wi-Fi Zone par mobile money.</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-2">
+            <li>Paiements sécurisés par mobile money</li>
+            <li>Gestion en temps réel des ventes</li>
+            <li>Interface utilisateur conviviale</li>
+          </ul>
+          <a href="https://api.whatsapp.com/send?phone=+22960374877&text=Je%20souhaite%20en%20savoir%20plus%20sur%20le%20système%20de%20vente%20de%20tickets%20Wi-Fi%20Zone." class="inline-block bg-blue-500 text-white text-lg px-8 py-4 rounded-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105" target="_blank">En savoir plus</a>
+        </div>
+      </div>
+
+      <!-- Vidéo 2 -->
+      <div class="video-section mb-32 flex flex-col lg:flex-row-reverse items-center min-h-screen">
+        <div class="w-full lg:w-2/3 pl-0 lg:pl-12 mb-12 lg:mb-0">
+          <div class="video-container shadow-2xl rounded-lg overflow-hidden" style="height: 0; padding-bottom: 56.25%;">
+            <iframe src="https://www.youtube.com/embed/Dawtv5cxDNU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="w-full lg:w-1/3 space-y-6">
+          <h3 class="text-3xl font-semibold">Plateforme d'inventaire des tickets</h3>
+          <p class="text-xl text-gray-600">Explorez notre plateforme intuitive pour gérer l'inventaire de vos tickets.</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-2">
+            <li>Suivi en temps réel des stocks de tickets</li>
+            <li>Rapports détaillés et analyses</li>
+            <li>Intégration facile avec vos systèmes existants</li>
+          </ul>
+          <a href="https://api.whatsapp.com/send?phone=+22960374877&text=Je%20souhaite%20avoir%20une%20démonstration%20de%20la%20plateforme%20d'inventaire%20des%20tickets." class="inline-block bg-green-500 text-white text-lg px-8 py-4 rounded-lg hover:bg-green-600 transition duration-300 transform hover:scale-105" target="_blank">Démonstration</a>
+        </div>
+      </div>
+
+      <!-- Vidéo 3 -->
+      <div class="video-section flex flex-col lg:flex-row items-center min-h-screen">
+        <div class="w-full lg:w-2/3 pr-0 lg:pr-12 mb-12 lg:mb-0">
+          <div class="video-container shadow-2xl rounded-lg overflow-hidden" style="height: 0; padding-bottom: 56.25%;">
+            <iframe src="https://www.youtube.com/embed/C5ODX8bL9PY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="w-full lg:w-1/3 space-y-6">
+          <h3 class="text-3xl font-semibold">Portail de connexion fluide</h3>
+          <p class="text-xl text-gray-600">Découvrez notre portail de connexion fluide, intuitif et intelligent.</p>
+          <ul class="list-disc list-inside text-gray-700 space-y-2">
+            <li>Design adaptatif pour tous les appareils</li>
+            <li>Processus de connexion simplifié</li>
+            <li>Options de personnalisation avancées</li>
+          </ul>
+          <a href="https://api.whatsapp.com/send?phone=+22960374877&text=Je%20souhaite%20essayer%20le%20portail%20de%20connexion%20fluide." class="inline-block bg-purple-500 text-white text-lg px-8 py-4 rounded-lg hover:bg-purple-600 transition duration-300 transform hover:scale-105" target="_blank">Essayer maintenant</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Nouvelle section d'images avec boutons Payer -->
+  <section class="py-24 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center mb-20 fade-in-up">Découvrez nos solutions en images</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Image 1 -->
+        <div class="relative">
+          <img src="template/p1.jpg" alt="Image 1" class="w-full rounded-lg shadow-lg">
+          <a href="https://api.whatsapp.com/send?phone=+22960374877&text=Je%20souhaite%20payer%20pour%20la%20solution%20illustrée%20sur%20l'image%201." class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300" target="_blank">Payer</a>
+        </div>
+        <!-- Image 2 -->
+        <div class="relative">
+          <img src="template/p2.jpg" alt="Image 2" class="w-full rounded-lg shadow-lg">
+          <a href="https://api.whatsapp.com/send?phone=+22960374877&text=Je%20souhaite%20payer%20pour%20la%20solution%20illustrée%20sur%20l'image%202." class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300" target="_blank">Payer</a>
+        </div>
+        <!-- Image 3 -->
+        <div class="relative">
+          <img src="template/p3.jpg" alt="Image 3" class="w-full rounded-lg shadow-lg">
+          <a href="https://api.whatsapp.com/send?phone=+22960374877&text=Je%20souhaite%20payer%20pour%20la%20solution%20illustrée%20sur%20l'image%203." class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition duration-300" target="_blank">Payer</a>
+        </div>
+        <!-- Ajoutez plus d'images ici si nécessaire -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Section des offres -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Nos offres Wi-Fi Zone pour 2024</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Offre Basique -->
+        <div class="bg-gray-100 p-6 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-4">Offre Basique</h3>
+          <p class="text-3xl font-bold mb-4">100.000F</p>
+          <ul class="space-y-2">
+            <li>✔️ Système de vente de tickets Wi-Fi Zone par mobile money (à vie)</li>
+            <li>✔️ Plateforme d'inventaire des tickets (licence de 3 mois)</li>
+            <li>✔️ Portail de connexion fluide, intuitif et intelligent</li>
+            <li>✔️ Installation d'équipements Wi-Fi Zone</li>
+            <li>✔️ Routeur Mikrotik (pour la vente des tickets)</li>
+            <li>✔️ Configuration (Mikhmon, Mikrotik, ...)</li>
+          </ul>
+        </div>
+        <!-- Offre Essentielle -->
+        <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-4">Offre Essentielle</h3>
+          <p class="text-3xl font-bold mb-4">170.000F</p>
+          <ul class="space-y-2">
+            <li>✔️ Tout ce qui est inclus dans l'offre Basique</li>
+            <li>✔️ Antenne longue portée (500 à 1000 mètres)</li>
+            <li>✔️ Plateforme d'inventaire des tickets (licence de 6 mois)</li>
+          </ul>
+        </div>
+        <!-- Offre Pro -->
+        <div class="bg-green-100 p-6 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-4">Offre Pro</h3>
+          <p class="text-3xl font-bold mb-4">240.000F</p>
+          <ul class="space-y-2">
+            <li>✔️ Tout ce qui est inclus dans l'offre Essentielle</li>
+            <li>✔️ Deux antennes longue portée (500 à 1000 mètres)</li>
+            <li>✔️ Plateforme d'inventaire des tickets (licence de 12 mois)</li>
+          </ul>
+        </div>
+
+        <!-- Offre d'extension -->
+        <div class="bg-yellow-100 p-6 rounded-lg shadow-md">
+          <h3 class="text-2xl font-semibold mb-4">Offre d'extension</h3>
+          <p class="text-lg mb-4">Contactez-nous pour plus de détails.</p>
+          <a href="https://api.whatsapp.com/send?phone=+22960374877&text=Je%20souhaite%20en%20savoir%20plus%20sur%20l'offre%20d'extension%20Wi-Fi%20Zone." class="inline-block bg-blue-500 text-white text-lg px-8 py-4 rounded-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105" target="_blank">En savoir plus</a>
+        </div>
+      </div>
+      <div class="text-center mt-8">
+        <p class="text-xl">Contact : <a href="tel:+22960374877" class="text-blue-500 hover:underline">+229 60374877</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section À propos -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8">À propos de nous</h2>
+      <p class="text-lg text-center max-w-3xl mx-auto">
+        Nous sommes une équipe de techniciens réseau et développeurs de plateforme passionnés par la création de solutions Wi-Fi innovantes. Notre expertise nous permet de fournir des services de haute qualité pour répondre à tous vos besoins en connectivité.
+      </p>
+    </div>
+  </section>
+
+  <!-- Section Témoignages -->
+  <section class="py-16 bg-gray-100">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Ce que disent nos clients</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <p class="text-gray-600 mb-4">"Le service Wi-Fi Zone a complètement transformé notre entreprise. La connectivité est rapide et fiable, et le système de gestion des tickets est un jeu d'enfant à utiliser."</p>
+          <p class="font-semibold">- Jean Dupont, Propriétaire de café</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <p class="text-gray-600 mb-4">"L'équipe technique est incroyablement compétente et réactive. Ils ont résolu tous nos problèmes de connectivité en un rien de temps."</p>
+          <p class="font-semibold">- Marie Leblanc, Gérante d'hôtel</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <p class="text-gray-600 mb-4">"Le portail de connexion est vraiment intuitif, même pour nos clients les moins technophiles. C'est un grand plus pour notre service client."</p>
+          <p class="font-semibold">- Pierre Martin, Directeur de centre commercial</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pied de page -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap justify-between">
+        <div class="w-full md:w-1/3 mb-6 md:mb-0">
+          <h3 class="text-xl font-semibold mb-4">Wi-Fi Zone</h3>
+          <p>Solutions de connectivité professionnelles pour tous vos besoins.</p>
+        </div>
+        <div class="w-full md:w-1/3 mb-6 md:mb-0">
+          <h3 class="text-xl font-semibold mb-4">Contact</h3>
+          <p>Téléphone : +229 60374877</p>
+          <p>Email : contact@wifi-zone.com</p>
+        </div>
+        <div class="w-full md:w-1/3">
+          <h3 class="text-xl font-semibold mb-4">Suivez-nous</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="hover:text-gray-400">Facebook</a>
+            <a href="#" class="hover:text-gray-400">Twitter</a>
+            <a href="#" class="hover:text-gray-400">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <p>© 2024 Wi-Fi Zone. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Icône flottante WhatsApp -->
+  <a href="https://api.whatsapp.com/send?phone=+22960374877" class="fixed bottom-4 right-4 z-50 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition duration-300" target="_blank">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </a>
+
+  <script>
+    // Code pour l'animation au défilement
+    function animateOnScroll() {
+      const sections = document.querySelectorAll('.video-section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      sections.forEach(section => {
+        observer.observe(section);
+      });
+    }
+
+    // Appeler la fonction quand le DOM est chargé
+    document.addEventListener('DOMContentLoaded', animateOnScroll);
+  </script>
+</body>
+</html>
